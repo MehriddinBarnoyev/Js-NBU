@@ -95,6 +95,7 @@
         <button onclick="hamburger()" class="hamburger">☰</button>
     </div>
 
+
     <div class="main">
         <h1>Valyutalar kursi</h1>
         <br>
@@ -140,52 +141,50 @@
                         <div class="h4" id="result">191,250.00 UZS</div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="title-cd">
-                            <h5 class="card-title">Valyuta kurslari arxiv</h5>
-                            <img class="card-img" src="photos/graphic.svg" alt="">
-
-                        </div>
-                        <div class="mb-3">
-                            <select class="months">
-                                <option>Yanvar</option>
-                                <option>Fevral</option>
-                                <option>Mart</option>
-                                <option>Aprel</option>
-                                <option>May</option>
-                                <option>Iyun</option>
-                                <option>Iyul</option>
-                                <option>August</option>
-                                <option>Sentabr</option>
-                                <option>Oktabr</option>
-                                <option>Noyabr</option>
-                                <option>Dekabr</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <select class="months">
-                                <option>2024</option>
-                                <option>2023</option>
-                                <option>2022</option>
-                                <option>2021</option>
-                                <option>2020</option>
-                            </select>
-                        </div>
-                        <br>
-                        <div class="calendar-grid">
-                            <div class="day">D</div>
-                            <div class="day">S</div>
-                            <div class="day">CH</div>
-                            <div class="day">P</div>
-                            <div class="day">J</div>
-                            <div class="day">SH</div>
-                            <div class="day">Y</div>
-                        </div>
-                        <br>
-                        <div class="calendar-grid" id="calendar"></div>
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <h2 class="calendar-title">Valyuta kurslari arxiv</h2>
+                        <svg class="chart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3v18h18"></path>
+                            <path d="M18 9l-5 5-2-2-4 4"></path>
+                        </svg>
                     </div>
-                    <p class="dinamika">Valyuta kurslari dinamikasi</p>
+                    
+                    <div class="calendar-controls">
+                        <select class="form-select" id="monthSelect">
+                            <option value="0">Yanvar</option>
+                            <option value="1">Fevral</option>
+                            <option value="2">Mart</option>
+                            <option value="3">Aprel</option>
+                            <option value="4">May</option>
+                            <option value="5">Iyun</option>
+                            <option value="6">Iyul</option>
+                            <option value="7">Avgust</option>
+                            <option value="8">Sentabr</option>
+                            <option value="9">Oktabr</option>
+                            <option value="10" selected>Noyabr</option>
+                            <option value="11">Dekabr</option>
+                        </select>
+                        
+                        <select class="form-select" id="yearSelect">
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024" selected>2024</option>
+                        </select>
+                    </div>
+            
+                    <div class="weekdays">
+                        <div class="weekday">D</div>
+
+                        <div class="weekday">S</div>
+                        <div class="weekday">CH</div>
+                        <div class="weekday">P</div>
+                        <div class="weekday">J</div>
+                        <div class="weekday">SH</div>
+                        <div class="weekday">Y</div>
+                    </div>
+            
+                    <div class="calendar-grid" id="calendarGrid"></div>
                 </div>
             </div>
         </div>
@@ -257,6 +256,7 @@
                     </tr>
                 </table>
             </div>
+
 
             <div>
                 <div>
@@ -331,6 +331,7 @@
                     </ul>
                 </div>
 
+
                 <!-- Ikkinchi Column -->
                 <div class="footer-section">
                     <ul class="footer-links">
@@ -402,71 +403,3 @@
             </div>
         </div>
     </footer>
-
-<!-- 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const calendarEl = document.getElementById("calendar");
-            for (let i = 1; i <= 31; i++) {
-                const dayEl = document.createElement("div");
-                dayEl.classList.add("calendar-day");
-                dayEl.textContent = i;
-                calendarEl.appendChild(dayEl);
-            }
-
-            const amountEl = document.getElementById("amount");
-            const currencyEl = document.getElementById("currency");
-            const resultEl = document.getElementById("result");
-
-            function updateResult() {
-                const amount = parseFloat(amountEl.value);
-                const currency = currencyEl.value;
-                let rate;
-                switch (currency) {
-                    case "USD":
-                        rate = 12750;
-                        break;
-                    case "EUR":
-                        rate = 13790;
-                        break;
-                    case "RUB":
-                        rate = 120;
-                        break;
-                    default:
-                        rate = 1;
-                }
-                const result = amount * rate;
-                resultEl.textContent =
-                    result.toLocaleString("en-US", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                    }) + " UZS";
-            }
-
-            amountEl.addEventListener("input", updateResult);
-            currencyEl.addEventListener("change", updateResult);
-        });
-
-        document.querySelector(".toggle-text").addEventListener("click", function() {
-            const currencyRows = document.querySelectorAll(".currency-row");
-            const toggleText = this;
-
-            currencyRows.forEach(row => {
-                if (row.style.display === "none" || row.style.display === "") {
-                    row.style.display = "table-row";
-                } else {
-                    row.style.display = "none";
-                }
-            });
-
-            const isExpanded = currencyRows[0].style.display === "table-row";
-            toggleText.innerText = isExpanded 
-            ? toggleText.getAttribute("data-hidetext") 
-            : toggleText.getAttribute("data-showtext");
-        });
-
-        
-    </script> -->
-</body>
-
-</html>

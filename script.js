@@ -207,7 +207,9 @@ const displayCurrencies = () => {
   currencies.slice(0, 7).forEach((currency) => {
     currencyContainer.innerHTML += `
       <tr>
-        <td><img src="${currency.flag}" alt="" /> ${currency.country} ${currency.currencyName}</td>
+        <td><img src="${currency.flag}" alt="" /> ${currency.country} ${
+      currency.currencyName
+    }</td>
         <td>${currency.buyRate ? currency.buyRate.toFixed(2) : "N/A"}</td>
         <td>${currency.sellRate ? currency.sellRate.toFixed(2) : "N/A"}</td>
       </tr>
@@ -231,19 +233,97 @@ const populateCurrencyDropdown = () => {
 const calculateCurrency = () => {
   const amount = parseFloat(document.getElementById("amount").value);
   const selectedCurrencyName = currencyDropdown.value;
-  const selectedCurrency = currencies.find((currency) => currency.currencyName === selectedCurrencyName);
+  const selectedCurrency = currencies.find(
+    (currency) => currency.currencyName === selectedCurrencyName
+  );
 
   if (selectedCurrency) {
     const resultInUZS = amount * selectedCurrency.buyRate;
-    document.getElementById("result").innerText = `${resultInUZS.toFixed(2)} UZS`;
+    document.getElementById("result").innerText = `${resultInUZS.toFixed(
+      2
+    )} UZS`;
   }
 };
 
 // Initialize and add event listeners if elements exist
 if (currencyDropdown && document.getElementById("amount")) {
   currencyDropdown.addEventListener("change", calculateCurrency);
-  document.getElementById("amount").addEventListener("input", calculateCurrency);
+  document
+    .getElementById("amount")
+    .addEventListener("input", calculateCurrency);
 }
+
+function generateCalendar(year, month) {
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const startingDay = firstDay.getDay();
+  const totalDays = lastDay.getDate();
+
+  const calendarGrid = document.getElementById("calendarGrid");
+  calendarGrid.innerHTML = "";
+
+  // Add empty cells for days before the first day of the month
+  for (let i = 0; i < startingDay; i++) {
+    const emptyDay = document.createElement("div");
+    emptyDay.className = "calendar-day";
+    calendarGrid.appendChild(emptyDay);
+  }
+
+  // Add days of the month
+  for (let day = 1; day <= totalDays; day++) {
+    const dayElement = document.createElement("div");
+    dayElement.className = "calendar-day";
+
+    // Check if it's today's date
+    const today = new Date();
+    if (
+      year === today.getFullYear() &&
+      month === today.getMonth() &&
+      day === today.getDate()
+    ) {
+      dayElement.classList.add("today");
+    }
+
+    // Check if it's the selected date (11th)
+    if (day === 11) {
+      dayElement.classList.add("active");
+    }
+
+    // Add inactive class for past dates
+    const currentDate = new Date(year, month, day);
+    if (currentDate < today) {
+      dayElement.classList.add("inactive");
+    }
+
+    dayElement.textContent = day;
+    dayElement.addEventListener("click", () => {
+      document
+        .querySelectorAll(".calendar-day.active")
+        .forEach((el) => el.classList.remove("active"));
+      if (!dayElement.classList.contains("inactive")) {
+        dayElement.classList.add("active");
+      }
+    });
+
+    calendarGrid.appendChild(dayElement);
+  }
+}
+
+// Initialize calendar
+const monthSelect = document.getElementById("monthSelect");
+const yearSelect = document.getElementById("yearSelect");
+
+function updateCalendar() {
+  const year = parseInt(yearSelect.value);
+  const month = parseInt(monthSelect.value);
+  generateCalendar(year, month);
+}
+
+monthSelect.addEventListener("change", updateCalendar);
+yearSelect.addEventListener("change", updateCalendar);
+
+// Generate initial calendar
+updateCalendar();
 
 // Execute functions on load
 displayCurrencies();
